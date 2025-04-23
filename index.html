@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HP Keyboard Typing Tutor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            blue: {
+              50: "#f0f7ff",
+              100: "#e0effe",
+              200: "#bae0fd",
+              300: "#7cc6fb",
+              400: "#36a9f7",
+              500: "#0c8ee7",
+              600: "#0270c4",
+              700: "#0259a0",
+              800: "#064b84",
+              900: "#0a406e",
+            },
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    /* Base key styles */
+    .keyboard {
+      user-select: none;
+    }
+    .key {
+      height: 3.5rem;
+      border-radius: 0.375rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: white;
+      border: 1px solid #d1d5db;
+      font-weight: 500;
+      transition: all 0.1s;
+      position: relative;
+      box-shadow: 0 2px 0 0 #d1d5db;
+    }
+    .key:active, .key.active {
+      transform: translateY(2px);
+      box-shadow: 0 0 0 0 #d1d5db;
+    }
+    
+    /* Key sizes */
+    .key-1u {
+      width: 3.5rem;
+    }
+    .key-1-25u {
+      width: 4.375rem;
+    }
+    .key-1-5u {
+      width: 5.25rem;
+    }
+    .key-1-75u {
+      width: 6.125rem;
+    }
+    .key-2u {
+      width: 7rem;
+    }
+    .key-2-25u {
+      width: 7.875rem;
+    }
+    .key-2-75u {
+      width: 9.625rem;
+    }
+    .key-6-25u {
+      width: 21.875rem;
+    }
+    
+    /* Home key indicators */
+    .home-key::after {
+      content: '';
+      position: absolute;
+      bottom: 8px;
+      width: 6px;
+      height: 2px;
+      background-color: #9ca3af;
+      border-radius: 1px;
+    }
+    
+    /* Key labels */
+    .key-label {
+      font-size: 1rem;
+    }
+    .key-sublabel {
+      font-size: 0.75rem;
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      color: #6b7280;
+    }
+    
+    /* Row spacing */
+    .keyboard-row {
+      display: flex;
+      margin-bottom: 0.5rem;
+    }
+    .keyboard-row:last-child {
+      margin-bottom: 0;
+    }
+    
+    /* HP branding */
+    .hp-logo {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      font-size: 0.75rem;
+      color: #6b7280;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-blue-50 to-white p-4 md:p-8">
+  <div class="max-w-6xl mx-auto">
+    <header class="mb-8 text-center">
+      <div class="flex items-center justify-center mb-4">
+        <h1 class="text-3xl md:text-4xl font-bold text-blue-600">HP Typing Tutor</h1>
+      </div>
+      <p class="text-gray-600 max-w-2xl mx-auto">
+        Learn to type without looking at the keyboard. Practice your typing skills and track your progress.
+      </p>
+    </header>
+
+    <div class="space-y-6">
+      <!-- Lesson selector -->
+      <div class="flex flex-wrap gap-2 justify-center mb-4" id="lesson-selector">
+        <!-- Lessons will be added here by JavaScript -->
+      </div>
+
+      <!-- Stats display -->
+      <div class="grid grid-cols-3 gap-4 mb-6">
+        <div class="bg-white rounded-lg shadow p-4 flex flex-col items-center justify-center">
+          <span class="text-sm text-gray-500">Accuracy</span>
+          <span class="text-2xl font-bold text-blue-600" id="accuracy">100%</span>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 flex flex-col items-center justify-center">
+          <span class="text-sm text-gray-500">WPM</span>
+          <span class="text-2xl font-bold text-blue-600" id="wpm">0</span>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 flex flex-col items-center justify-center">
+          <span class="text-sm text-gray-500">Progress</span>
+          <span class="text-2xl font-bold text-blue-600" id="progress">0%</span>
+        </div>
+      </div>
+
+      <!-- Text display area -->
+      <div class="bg-white rounded-lg shadow mb-6">
+        <div class="p-6">
+          <div class="text-lg md:text-xl font-mono leading-relaxed" id="text-display">
+            <!-- Text will be added here by JavaScript -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress bar -->
+      <div class="w-full bg-gray-200 rounded-full h-2 mb-6">
+        <div class="bg-blue-600 h-2 rounded-full" id="progress-bar" style="width: 0%"></div>
+      </div>
+
+      <!-- Virtual keyboard -->
+      <div class="mb-6">
+        <div class="bg-gray-100 p-4 rounded-lg shadow-md relative">
+          <div class="hp-logo">HP Premium Keyboard</div>
+          
+          <div class="keyboard mx-auto" id="virtual-keyboard">
+            <!-- Keyboard will be added here by JavaScript -->
+          </div>
+
+          <!-- Keyboard instructions -->
+          <div class="mt-4 text-center text-xs text-gray-500">
+            Type the highlighted character • Keep your eyes on the screen, not the keyboard
+          </div>
+        </div>
+      </div>
+
+      <!-- Lesson controls -->
+      <div class="flex justify-center gap-4">
+        <button id="reset-btn" class="px-4 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50 text-gray-700">
+          Reset Lesson
+        </button>
+        <div id="completion-message" class="hidden px-4 py-2 text-base bg-green-50 text-green-700 border border-green-200 rounded-md">
+          Lesson Completed!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Typing lessons from basic to advanced
+    const lessons = [
+      {
+        id: 1,
+        name: "Home Row",
+        text: "asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl;",
+      },
+      {
+        id: 2,
+        name: "Top Row",
+        text: "qwer tyui qwer tyui qwer tyui qwer tyui qwer tyui",
+      },
+      {
+        id: 3,
+        name: "Bottom Row",
+        text: "zxcv bnm, zxcv bnm, zxcv bnm, zxcv bnm, zxcv bnm,",
+      },
+      {
+        id: 4,
+        name: "Mixed Practice",
+        text: "The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs.",
+      },
+    ];
+
+    // Keyboard layout definition
+    const keyboardLayout = [
+      // Row 1: Function keys and Escape
+      [
+        { key: "Escape", label: "Esc", size: "1-5u", id: "Escape" },
+        { key: "F1", label: "F1", size: "1u", id: "F1" },
+        { key: "F2", label: "F2", size: "1u", id: "F2" },
+        { key: "F3", label: "F3", size: "1u", id: "F3" },
+        { key: "F4", label: "F4", size: "1u", id: "F4" },
+        { key: "F5", label: "F5", size: "1u", id: "F5" },
+        { key: "F6", label: "F6", size: "1u", id: "F6" },
+        { key: "F7", label: "F7", size: "1u", id: "F7" },
+        { key: "F8", label: "F8", size: "1u", id: "F8" },
+        { key: "F9", label: "F9", size: "1u", id: "F9" },
+        { key: "F10", label: "F10", size: "1u", id: "F10" },
+        { key: "F11", label: "F11", size: "1u", id: "F11" },
+        { key: "F12", label: "F12", size: "1u", id: "F12" },
+      ],
+      // Row 2: Number row
+      [
+        { key: "`", label: "`", sublabel: "~", size: "1u", id: "Backquote" },
+        { key: "1", label: "1", sublabel: "!", size: "1u", id: "Digit1" },
+        { key: "2", label: "2", sublabel: "@", size: "1u", id: "Digit2" },
+        { key: "3", label: "3", sublabel: "#", size: "1u", id: "Digit3" },
+        { key: "4", label: "4", sublabel: "$", size: "1u", id: "Digit4" },
+        { key: "5", label: "5", sublabel: "%", size: "1u", id: "Digit5" },
+        { key: "6", label: "6", sublabel: "^", size: "1u", id: "Digit6" },
+        { key: "7", label: "7", sublabel: "&", size: "1u", id: "Digit7" },
+        { key: "8", label: "8", sublabel: "*", size: "1u", id: "Digit8" },
+        { key: "9", label: "9", sublabel: "(", size: "1u", id: "Digit9" },
+        { key: "0", label: "0", sublabel: ")", size: "1u", id: "Digit0" },
+        { key: "-", label: "-", sublabel: "_", size: "1u", id: "Minus" },
+        { key: "=", label: "=", sublabel: "+", size: "1u", id: "Equal" },
+        { key: "Backspace", label: "Backspace", size: "2u", id: "Backspace" },
+      ],
+      // Row 3: QWERTY row
+      [
+        { key: "Tab", label: "Tab", size: "1-5u", id: "Tab" },
+        { key: "q", label: "Q", size: "1u", id: "KeyQ" },
+        { key: "w", label: "W", size: "1u", id: "KeyW" },
+        { key: "e", label: "E", size: "1u", id: "KeyE" },
+        { key: "r", label: "R", size: "1u", id: "KeyR" },
+        { key: "t", label: "T", size: "1u", id: "KeyT" },
+        { key: "y", label: "Y", size: "1u", id: "KeyY" },
+        { key: "u", label: "U", size: "1u", id: "KeyU" },
+        { key: "i", label: "I", size: "1u", id: "KeyI" },
+        { key: "o", label: "O", size: "1u", id: "KeyO" },
+        { key: "p", label: "P", size: "1u", id: "KeyP" },
+        { key: "[", label: "[", sublabel: "{", size: "1u", id: "BracketLeft" },
+        { key: "]", label: "]", sublabel: "}", size: "1u", id: "BracketRight" },
+        { key: "\\", label: "\\", sublabel: "|", size: "1-5u", id: "Backslash" },
+      ],
+      // Row 4: Home row
+      [
+        { key: "CapsLock", label: "Caps Lock", size: "1-75u", id: "CapsLock" },
+        { key: "a", label: "A", size: "1u", id: "KeyA" },
+        { key: "s", label: "S", size: "1u", id: "KeyS" },
+        { key: "d", label: "D", size: "1u", id: "KeyD" },
+        { key: "f", label: "F", size: "1u", id: "KeyF", isHomeKey: true },
+        { key: "g", label: "G", size: "1u", id: "KeyG" },
+        { key: "h", label: "H", size: "1u", id: "KeyH" },
+        { key: "j", label: "J", size: "1u", id: "KeyJ", isHomeKey: true },
+        { key: "k", label: "K", size: "1u", id: "KeyK" },
+        { key: "l", label: "L", size: "1u", id: "KeyL" },
+        { key: ";", label: ";", sublabel: ":", size: "1u", id: "Semicolon" },
+        { key: "'", label: "'", sublabel: "\"", size: "1u", id: "Quote" },
+        { key: "Enter", label: "Enter", size: "2-25u", id: "Enter" },
+      ],
+      // Row 5: Bottom row
+      [
+        { key: "Shift", label: "Shift", size: "2-25u", id: "ShiftLeft" },
+        { key: "z", label: "Z", size: "1u", id: "KeyZ" },
+        { key: "x", label: "X", size: "1u", id: "KeyX" },
+        { key: "c", label: "C", size: "1u", id: "KeyC" },
+        { key: "v", label: "V", size: "1u", id: "KeyV" },
+        { key: "b", label: "B", size: "1u", id: "KeyB" },
+        { key: "n", label: "N", size: "1u", id: "KeyN" },
+        { key: "m", label: "M", size: "1u", id: "KeyM" },
+        { key: ",", label: ",", sublabel: "<", size: "1u", id: "Comma" },
+        { key: ".", label: ".", sublabel: ">", size: "1u", id: "Period" },
+        { key: "/", label: "/", sublabel: "?", size: "1u", id: "Slash" },
+        { key: "Shift", label: "Shift", size: "2-75u", id: "ShiftRight" },
+      ],
+      // Row 6: Bottom row with spacebar
+      [
+        { key: "Control", label: "Ctrl", size: "1-25u", id: "ControlLeft" },
+        { key: "Meta", label: "Win", size: "1-25u", id: "MetaLeft" },
+        { key: "Alt", label: "Alt", size: "1-25u", id: "AltLeft" },
+        { key: " ", label: "Space", size: "6-25u", id: "Space" },
+        { key: "Alt", label: "Alt", size: "1-25u", id: "AltRight" },
+        { key: "Meta", label: "Win", size: "1-25u", id: "MetaRight" },
+        { key: "Control", label: "Ctrl", size: "1-25u", id: "ControlRight" },
+      ],
+    ];
+
+    // State variables
+    let currentLesson = lessons[0];
+    let userInput = "";
+    let activeKey = "";
+    let accuracy = 100;
+    let wpm = 0;
+    let startTime = null;
+    let errors = 0;
+    let isCompleted = false;
+
+    // DOM elements
+    const lessonSelector = document.getElementById('lesson-selector');
+    const textDisplay = document.getElementById('text-display');
+    const virtualKeyboard = document.getElementById('virtual-keyboard');
+    const accuracyDisplay = document.getElementById('accuracy');
+    const wpmDisplay = document.getElementById('wpm');
+    const progressDisplay = document.getElementById('progress');
+    const progressBar = document.getElementById('progress-bar');
+    const resetButton = document.getElementById('reset-btn');
+    const completionMessage = document.getElementById('completion-message');
+
+    // Initialize the application
+    function init() {
+      createLessonButtons();
+      createKeyboard();
+      updateTextDisplay();
+      addEventListeners();
+    }
+
+    // Create lesson selector buttons
+    function createLessonButtons() {
+      lessonSelector.innerHTML = '';
+      lessons.forEach(lesson => {
+        const button = document.createElement('button');
+        button.textContent = lesson.name;
+        button.className = `px-4 py-2 rounded-md text-sm ${currentLesson.id === lesson.id ? 
+          'bg-blue-600 text-white' : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'}`;
+        button.addEventListener('click', () => changeLesson(lesson));
+        lessonSelector.appendChild(button);
+      });
+    }
+
+    // Create virtual keyboard
+    function createKeyboard() {
+      virtualKeyboard.innerHTML = '';
+      
+      keyboardLayout.forEach((row, rowIndex) => {
+        const keyboardRow = document.createElement('div');
+        keyboardRow.className = 'keyboard-row gap-1 justify-center';
+        
+        row.forEach(keyConfig => {
+          const keyElement = document.createElement('div');
+          keyElement.className = `key key-${keyConfig.size} ${keyConfig.isHomeKey ? 'home-key' : ''}`;
+          keyElement.id = `key-${keyConfig.id}`;
+          
+          // Create label element
+          const labelElement = document.createElement('span');
+          labelElement.className = 'key-label';
+          labelElement.textContent = keyConfig.label;
+          keyElement.appendChild(labelElement);
+          
+          // Add sublabel if exists
+          if (keyConfig.sublabel) {
+            const sublabelElement = document.createElement('span');
+            sublabelElement.className = 'key-sublabel';
+            sublabelElement.textContent = keyConfig.sublabel;
+            keyElement.appendChild(sublabelElement);
+          }
+          
+          keyboardRow.appendChild(keyElement);
+        });
+        
+        virtualKeyboard.appendChild(keyboardRow);
+      });
+    }
+
+    // Update text display with current lesson
+    function updateTextDisplay() {
+      textDisplay.innerHTML = '';
+      
+      currentLesson.text.split('').forEach((char, index) => {
+        const charSpan = document.createElement('span');
+        charSpan.textContent = char === " " ? "\u00A0" : char;
+        charSpan.className = 'inline-block';
+        
+        if (index < userInput.length) {
+          // Character already typed
+          if (userInput[index] === char) {
+            charSpan.className += ' text-green-600';
+          } else {
+            charSpan.className += ' text-red-600 bg-red-100';
+          }
+        } else if (index === userInput.length) {
+          // Current character to type
+          charSpan.className += ' bg-blue-100 text-blue-800 px-0.5 animate-pulse';
+        }
+        
+        textDisplay.appendChild(charSpan);
+      });
+    }
+
+    // Map key to keyboard ID
+    function mapKeyToId(key) {
+      // Handle special cases
+      if (key === " ") return "Space";
+      if (key === "Backspace") return "Backspace";
+      if (key === "Enter") return "Enter";
+      if (key === "Tab") return "Tab";
+      if (key === "Escape") return "Escape";
+      if (key === "CapsLock") return "CapsLock";
+      
+      // For letters
+      if (/^[a-z]$/.test(key)) {
+        return `Key${key.toUpperCase()}`;
+      }
+      
+      // For numbers
+      if (/^[0-9]$/.test(key)) {
+        return `Digit${key}`;
+      }
+      
+      // For other characters
+      const keyMap = {
+        '`': 'Backquote',
+        '-': 'Minus',
+        '=': 'Equal',
+        '[': 'BracketLeft',
+        ']': 'BracketRight',
+        '\\': 'Backslash',
+        ';': 'Semicolon',
+        "'": 'Quote',
+        ',': 'Comma',
+        '.': 'Period',
+        '/': 'Slash'
+      };
+      
+      return keyMap[key] || key;
+    }
+
+    // Update keyboard display
+    function updateKeyboard() {
+      // Reset all keys
+      document.querySelectorAll('.key').forEach(key => {
+        key.classList.remove('bg-blue-600', 'text-white', 'border-blue-700', 'bg-blue-100', 'text-blue-800', 'border-blue-200', 'active');
+      });
+      
+      // Highlight active key
+      if (activeKey) {
+        const keyId = `key-${mapKeyToId(activeKey)}`;
+        const keyElement = document.getElementById(keyId);
+        if (keyElement) {
+          keyElement.classList.add('bg-blue-600', 'text-white', 'border-blue-700', 'active');
+        }
+      }
+      
+      // Highlight next key
+      const nextChar = currentLesson.text[userInput.length] || "";
+      if (nextChar) {
+        const keyId = `key-${mapKeyToId(nextChar)}`;
+        const keyElement = document.getElementById(keyId);
+        if (keyElement && !activeKey) {
+          keyElement.classList.add('bg-blue-100', 'text-blue-800', 'border-blue-200');
+        }
+      }
+    }
+
+    // Handle keyboard input
+    function handleKeyDown(e) {
+      // Prevent default behavior for keys that might interfere with the app
+      if (e.key === "Tab" || e.key === " ") {
+        e.preventDefault();
+      }
+      
+      // Ignore modifier keys when pressed alone
+      if (
+        e.key === "Shift" ||
+        e.key === "Control" ||
+        e.key === "Alt" ||
+        e.key === "Meta" ||
+        e.key === "CapsLock"
+      ) {
+        activeKey = e.key;
+        updateKeyboard();
+        return;
+      }
+
+      // Start timer on first keypress
+      if (userInput.length === 0 && startTime === null) {
+        startTime = Date.now();
+      }
+
+      // Set the active key for visual feedback
+      activeKey = e.key;
+      updateKeyboard();
+
+      // Check if the lesson is already completed
+      if (isCompleted) return;
+
+      // Handle backspace
+      if (e.key === "Backspace") {
+        if (userInput.length > 0) {
+          userInput = userInput.slice(0, -1);
+          updateTextDisplay();
+          updateProgress();
+        }
+        return;
+      }
+
+      // Only process if it's a single character
+      if (e.key.length === 1) {
+        const expectedChar = currentLesson.text[userInput.length];
+
+        // Check if the key pressed matches the expected character
+        if (expectedChar === e.key) {
+          userInput += e.key;
+          updateTextDisplay();
+          updateProgress();
+
+          // Check if lesson is completed
+          if (userInput.length === currentLesson.text.length) {
+            isCompleted = true;
+            calculateFinalStats();
+            completionMessage.classList.remove('hidden');
+          }
+        } else {
+          // Increment error count
+          errors++;
+
+          // Update accuracy
+          const totalAttempts = userInput.length + 1;
+          accuracy = Math.max(0, Math.round(((totalAttempts - errors - 1) / totalAttempts) * 100));
+          accuracyDisplay.textContent = `${accuracy}%`;
+        }
+      }
+    }
+
+    // Handle key release
+    function handleKeyUp(e) {
+      if (e.key === activeKey) {
+        activeKey = "";
+        updateKeyboard();
+      }
+    }
+
+    // Calculate final statistics
+    function calculateFinalStats() {
+      if (!startTime) return;
+
+      const endTime = Date.now();
+      const timeInMinutes = (endTime - startTime) / 60000;
+      const words = userInput.length / 5; // Standard: 5 characters = 1 word
+      wpm = Math.round(words / timeInMinutes);
+
+      wpmDisplay.textContent = wpm;
+      completionMessage.textContent = `Lesson Completed! WPM: ${wpm} | Accuracy: ${accuracy}%`;
+    }
+
+    // Update progress display
+    function updateProgress() {
+      const progress = Math.round((userInput.length / currentLesson.text.length) * 100);
+      progressDisplay.textContent = `${progress}%`;
+      progressBar.style.width = `${progress}%`;
+      
+      // Update WPM during typing
+      if (startTime && userInput.length > 0) {
+        const currentTime = Date.now();
+        const timeInMinutes = (currentTime - startTime) / 60000;
+        const words = userInput.length / 5;
+        wpm = Math.round(words / timeInMinutes);
+        wpmDisplay.textContent = wpm;
+      }
+    }
+
+    // Reset the lesson
+    function resetLesson() {
+      userInput = "";
+      startTime = null;
+      errors = 0;
+      accuracy = 100;
+      wpm = 0;
+      isCompleted = false;
+      
+      accuracyDisplay.textContent = "100%";
+      wpmDisplay.textContent = "0";
+      progressDisplay.textContent = "0%";
+      progressBar.style.width = "0%";
+      completionMessage.classList.add('hidden');
+      
+      updateTextDisplay();
+      updateKeyboard();
+    }
+
+    // Change the lesson
+    function changeLesson(lesson) {
+      currentLesson = lesson;
+      resetLesson();
+      createLessonButtons();
+    }
+
+    // Add event listeners
+    function addEventListeners() {
+      window.addEventListener('keydown', handleKeyDown);
+      window.addEventListener('keyup', handleKeyUp);
+      resetButton.addEventListener('click', resetLesson);
+    }
+
+    // Initialize the app
+    init();
+  </script>
+</body>
+</html>
