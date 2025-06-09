@@ -28,6 +28,17 @@
     }
   </script>
   <style>
+
+   .mreo {
+    position: absolute;
+
+    right: 0.5rem;
+    font-size: 0.75rem;
+    color: #6b7280;
+    font-
+    weight: 600;
+
+    }
     /* Base key styles */
     .keyboard {
       user-select: none;
@@ -117,6 +128,8 @@
       color: #6b7280;
       font-weight: 600;
     }
+
+
   </style>
 </head>
 <body class="min-h-screen bg-gradient-to-b from-blue-50 to-white p-4 md:p-8">
@@ -126,7 +139,7 @@
         <h1 class="text-3xl md:text-4xl font-bold text-blue-600">HP Typing Tutor</h1>
       </div>
       <p class="text-gray-600 max-w-2xl mx-auto">
-        Learn to type without looking at the keyboard. Practice your typing skills and track your progress.
+        تعلّم الكتابة دون النظر إلى لوحة المفاتيح. تدرب على مهاراتك في الكتابة وتابع تقدمك.
       </p>
     </header>
 
@@ -164,12 +177,31 @@
       <!-- Progress bar -->
       <div class="w-full bg-gray-200 rounded-full h-2 mb-6">
         <div class="bg-blue-600 h-2 rounded-full" id="progress-bar" style="width: 0%"></div>
+
       </div>
 
       <!-- Virtual keyboard -->
       <div class="mb-6">
         <div class="bg-gray-100 p-4 rounded-lg shadow-md relative">
-          <div class="hp-logo">HP Premium Keyboard</div>
+          <div class="hp-logo">تم انشاء بواسط
+            <div class="mreo bt-1" >
+ <a  class="=license" href="https://www.youtube.com/@imMohammedMustafa">
+             @imMohammedMustafa
+ <div>
+
+          <svg xmlns="http://www.w3.org/2000/svg" id="yt-ringo2-svg_yt9" width="83" height="10" viewBox="0 0 93 20" focusable="false" aria-hidden="true" style="pointer-events: none; display: inherit; width: 100%; height: 100%;">
+  <g>
+    <path d="M14.4848 20C14.4848 20 23.5695 20 25.8229 19.4C27.0917 19.06 28.0459 18.08 28.3808 16.87C29 14.65 29 9.98 29 9.98C29 9.98 29 5.34 28.3808 3.14C28.0459 1.9 27.0917 0.94 25.8229 0.61C23.5695 0 14.4848 0 14.4848 0C14.4848 0 5.42037 0 3.17711 0.61C1.9286 0.94 0.954148 1.9 0.59888 3.14C0 5.34 0 9.98 0 9.98C0 9.98 0 14.65 0.59888 16.87C0.954148 18.08 1.9286 19.06 3.17711 19.4C5.42037 20 14.4848 20 14.4848 20Z" fill="#FF0033"></path>
+    <path d="M19 10L11.5 5.75V14.25L19 10Z" fill="white"></path>
+  </g>
+
+
+</svg>
+ </div>
+            </a>
+
+      </div>
+          </div>
           
           <div class="keyboard mx-auto" id="virtual-keyboard">
             <!-- Keyboard will be added here by JavaScript -->
@@ -177,8 +209,7 @@
 
           <!-- Keyboard instructions -->
           <div class="mt-4 text-center text-xs text-gray-500">
-            Type the highlighted character • Keep your eyes on the screen, not the keyboard
-          </div>
+اكتب الحرف المميز • أبقِ عينيك على الشاشة، وليس على لوحة المفاتيح          </div>
         </div>
       </div>
 
@@ -623,5 +654,6 @@
     // Initialize the app
     init();
   </script>
+
 </body>
 </html>
