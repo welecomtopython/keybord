@@ -27,13 +27,13 @@
 قناة [**@imMohammedMustafa**](https://www.youtube.com/@imMohammedMustafa)  
 تهتم بشرح البرمجة وتعلم لغات مثل Python وJavaScript وHTML بطريقة سهلة ومبسطة.
 
-[![اشترك الآن](https://img.shields.io/badge/اشترك-في_القناة-red?logo=youtube)](https://www.youtube.com/@imMohammedMustafa)
+[![اشترك الآن]([https://img.shields.io/badge/اشترك-في_القناة-red?logo=youtube](https://i.ytimg.com/vi/vwH9JJ666eY/oar2.jpg?sqp=-oaymwEoCJUDENAFSFqQAgHyq4qpAxcIARUAAIhC2AEB4gEKCBgQAhgGOAFAAQ==&rs=AOn4CLAZajuAd0r4uG5jNhw2mH2uYZK8Dg))](https://www.youtube.com/@imMohammedMustafa)
 
 ---
 
 ## 🎥 فيديو توضيحي على YouTube:
 
-[![شاهد الفيديو](https://img.youtube.com/vi/dQw4w9WgXcQ/0.jpg)](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+[![شاهد الفيديو](https://img.youtube.com/vi/dQw4w9WgXcQ/0.jpg)](https://youtube.com/shorts/vwH9JJ666eY)
 
 > *(ملاحظة: يمكن استبدال الرابط لاحقًا بالفيديو الرسمي للشرح)*
 
