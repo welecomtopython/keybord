@@ -33,7 +33,7 @@
 
 ## 🎥 فيديو توضيحي على YouTube:
 
-[![شاهد الفيديو](https://img.youtube.com/vi/dQw4w9WgXcQ/0.jpg)](https://youtube.com/shorts/vwH9JJ666eY)
+[![شاهد الفيديو](https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Youtube_shorts_icon.svg/500px-Youtube_shorts_icon.svg.png)](https://youtube.com/shorts/vwH9JJ666eY)
 
 > *(ملاحظة: يمكن استبدال الرابط لاحقًا بالفيديو الرسمي للشرح)*
 
